@@ -117,7 +117,7 @@ if(q.empty){a.textContent="अभी कोई अपॉइंटमेंट �
 var u=document.createElement("ul");
 q.forEach(function(s){var li=document.createElement("li");li.textContent=s.id+" — "+(s.data().name||"")+" — "+s.data().slot;
 var b=document.createElement("button");b.className="s";b.textContent="हो गया";
-().then(list)};li.appendChild(b)
+b.onclick=function(){var v=prompt("दिया गया: गेहूं,चावल,चीनी (किग्रा) कॉमा से अलग, जैसे 10,5,1");if(v===null)return;var n=v.split(",").map(function(x){return +x.trim()||0});var F=firebase.firestore.FieldValue;db.doc("shop/info").update({wheat:F.increment(-n[0]),rice:F.increment(-(n[1]||0)),sugar:F.increment(-(n[2]||0))}).then(function(){db.doc("appts/"+s.id).delete()}).catch(function(){alert("सेव नहीं हुआ")})};li.appendChild(b);u.appendChild(li)});
  a.appendChild(u);}).catch(function(){a.textContent="सिर्फ
 au.onAuthStateChanged(function(u){
 if(!u)return;$("gi").className="h";$("pn").className="";
