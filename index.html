@@ -89,7 +89,7 @@ $("s0").textContent=(d.wheat||0)+" किग्रा";$("s1").textContent=(d.ri
 $("ky").textContent=d.kyc||"अभी कोई जानकारी नहीं";}
 var info={};
 
-db.doc("shop/info").onSnapshot(function(s){info=s.exists?s.data():{};show(info)},function(){});
+db.doc("shop/info").onSnapshot(function(s){info=s.exists?s.data():{};show(info)},function(){})
 $("ab").onclick=function(){
 var c=$("ac").value.trim(),d=$("ad").value,n=$("an").value.trim();
 if(!/^\d{12}$/.test(c)||!d){say("am","12 अंक का कार्ड नंबर और तारीख डालें",1);return}
