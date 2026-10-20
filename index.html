@@ -38,8 +38,8 @@ li{margin:6px 0}
 <table><tr><td>गेहूं</td><td id="s0">-</td></tr><tr><td>चावल</td><td id="s1">-</td></tr><tr><td>चीनी</td><td id="s2">-</td></tr></table></section>
 
 <section class="cd"><h2>अपॉइंटमेंट बुक करें</h2>
-<p class="sub" style="margin:0">बुक करने वालों को दुकान पर पहले राशन मिलेगा।</p>
-<label for="ac">राशन कार्ड नंबर</label><input id="ac" inputmode="numeric" maxlength="12">
+<p class="sub" style="margin:0">बुक करने वालों को दुकान पर पहले राशन मिलेगा।</p> 
+  <label for="an">नाम</label><input id="an">
 <label for="ad">तारीख</label><input id="ad" type="date">
 <label for="at">समय</label><select id="at"><option>सुबह 9 – 11</option><option>सुबह 11 – 1</option><option>दोपहर 2 – 5</option></select>
 <button id="ab">अपॉइंटमेंट पक्का करें</button><div id="am" class="m h"></div></section>
@@ -91,10 +91,10 @@ var info={};
 
 db.doc("shop/info").onSnapshot(function(s){info=s.exists?s.data():{};show(info)},function(){});
 $("ab").onclick=function(){
-var c=$("ac").value.trim(),d=$("ad").value;
+var c=$("ac").value.trim(),d=$("ad").value,n=$("an").value.trim();
 if(!/^\d{12}$/.test(c)||!d){say("am","12 अंक का कार्ड नंबर और तारीख डालें",1);return}
 var slot=d+", "+$("at").value;
-db.doc("appts/"+c).set({slot:slot,at:firebase.firestore.FieldValue.serverTimestamp()}).then(function(){
+db.doc("appts/"+c).set({slot:slot,at:firebase.firestore.FieldValue.serverTimestamp()}).then(function()
 say("am","पक्का हुआ: "+slot+". दुकान पर कार्ड साथ लाएं।")}).catch(function(){
 say("am","इस कार्ड पर अपॉइंटमेंट पहले से है, या कुछ गड़बड़ हुई",1)});};
 
@@ -112,13 +112,13 @@ l.appendChild(u);}).catch(function(){say("mm","कुछ गड़बड़ ह�
 $("gi").onclick=function(){au.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(function(e){alert("Login nahi hua: "+e.code)})};
 function list(){
 var a=$("pa");a.textContent="";
-db.collection("appts").orderBy("at").get().then(function(q){
+db.collection("appts").orderBy("at").onSnapshot(function(q){a.textContent="";
 if(q.empty){a.textContent="अभी कोई अपॉइंटमेंट नहीं";return}
 var u=document.createElement("ul");
-q.forEach(function(s){var li=document.createElement("li");li.textContent=s.id+" — "+s.data().slot;
+q.forEach(function(s){var li=document.createElement("li");li.textContent=s.id+" — "+(s.data().name||"")+" — "+s.data().slot;
 var b=document.createElement("button");b.className="s";b.textContent="हो गया";
-b.onclick=function(){db.doc("appts/"+s.id).delete().then(list)};li.appendChild(b);u.appendChild(li)});
-a.appendChild(u);}).catch(function(){a.textContent="सिर्फ दुकानदार देख सकता है"});}
+().then(list)};li.appendChild(b)
+ a.appendChild(u);}).catch(function(){a.textContent="सिर्फ
 au.onAuthStateChanged(function(u){
 if(!u)return;$("gi").className="h";$("pn").className="";
 $("i0").value=info.start||"";$("i1").value=info.end||"";$("i2").value=info.wheat||0;
