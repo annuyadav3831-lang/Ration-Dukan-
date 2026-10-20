@@ -88,9 +88,8 @@ $("ds").textContent=d.start||"-";$("de").textContent=d.end||"-";
 $("s0").textContent=(d.wheat||0)+" किग्रा";$("s1").textContent=(d.rice||0)+" किग्रा";$("s2").textContent=(d.sugar||0)+" किग्रा";
 $("ky").textContent=d.kyc||"अभी कोई जानकारी नहीं";}
 var info={};
-function load(){db.doc("shop/info").get().then(function(s){info=s.exists?s.data():{};show(info)}).catch(function(){})}
-load();
-
+function load(){db.doc("shop/info").get().then(function(s){info=s.exists?s.data():{};show(info)}).catch(function();db.doc("shop/info").onSnapshot(function(s){info=s.exists?s.data():{};show(info)},function(){});
+db.doc("shop/info").onSnapshot(function(s){info=s.exists?s.data():{};show(info)},function(){});
 $("ab").onclick=function(){
 var c=$("ac").value.trim(),d=$("ad").value;
 if(!/^\d{12}$/.test(c)||!d){say("am","12 अंक का कार्ड नंबर और तारीख डालें",1);return}
@@ -110,7 +109,7 @@ var u=document.createElement("ul");
 m.forEach(function(n){var li=document.createElement("li");li.textContent=n+(k.indexOf(n)>-1?" — KYC बाकी":" — KYC पूरी");u.appendChild(li)});
 l.appendChild(u);}).catch(function(){say("mm","कुछ गड़बड़ हुई, दोबारा कोशिश करें",1)});};
 
-$("gi").onclick=function(){au.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(function(){})};
+ firebase.auth.GoogleAuthProvider()).catch(function(){})};
 function list(){
 var a=$("pa");a.textContent="";
 db.collection("appts").orderBy("at").get().then(function(q){
